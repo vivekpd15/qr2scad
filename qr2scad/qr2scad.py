@@ -29,6 +29,7 @@ Bugs: <https://github.com/l0b0/qr2scad/issues>
 
 from PIL import Image, ImageOps
 from signal import signal, SIGPIPE, SIG_DFL
+import qrcode as qrc
 import argparse
 import sys
 
@@ -53,7 +54,7 @@ signal(SIGPIPE, SIG_DFL)
 """Avoid 'Broken pipe' message when canceling piped command."""
 
 
-def qr2scad(infile,outfile):
+def qr2scad(infile,outfile,render=False):
     """Convert black pixels to OpenSCAD cubes."""
     img = Image.open(infile)
 
@@ -108,6 +109,8 @@ def qr2scad(infile,outfile):
                 result += ' _qr_code_dot();\n'
     result += '}\n'
     result += 'qr_code_size = %d;' % (qr_side)
+    if( render ):
+        result += "\nqr_code();"
     f = open(outfile,"w+")
     f.write(result)
     f.close()
@@ -120,9 +123,27 @@ def main(argv=None):
     parser.add_argument("outfile", help="output file")
     parser.add_argument("-v", "--verbosity", action="count",
                         help="write to screen")
+    parser.add_argument("-r", "--render", action="count",
+                        help="Have the scad render the qr code.")
+    parser.add_argument("-g", "--generate",  
+                        help="generate")
+
     args = parser.parse_args()
+    if(args.generate):
+        qr = qrc.QRCode(
+            version=1,
+            error_correction=qrc.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+            )
+        qr.add_data(args.generate)
+        qr.make(fit=True)
+        img = qr.make_image()
+        img.save(args.infile)
+        print args.generate
+        
     print "Using {0} to generate {1}.".format(args.infile,args.outfile)
-    result = qr2scad(args.infile,args.outfile)
+    result = qr2scad(args.infile,args.outfile,args.render)
     if(args.verbosity):
         print result
 

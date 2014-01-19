@@ -23,7 +23,7 @@ setup(
     url=__url__,
     keywords='QR code QRcode convert converter OpenSCAD SCAD CAD',
     packages=[__package__],
-    install_requires=['pillow'],
+    install_requires=['pillow','qrcode'],
     entry_points={
         'console_scripts': ['qr2scad=qr2scad.qr2scad:main']},
     classifiers=[
