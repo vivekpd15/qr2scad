@@ -29,6 +29,7 @@ Bugs: <https://github.com/l0b0/qr2scad/issues>
 
 from PIL import Image, ImageOps
 from signal import signal, SIGPIPE, SIG_DFL
+import argparse
 import sys
 
 BLOCK_SIZE = 1
@@ -39,7 +40,7 @@ BLOCK_PADDING.
 
 BLOCK_PADDING = 0.01
 """Cubes have to be less than 1 unit wide. Otherwise you will get the message
-"Object isn't a valid 2-manifold!" on STL export (see
+Object isn't a valid 2-manifold! on STL export (see
 <http://en.wikibooks.org/wiki/OpenSCAD_User_Manual/STL_Import_and_Export>)."""
 
 BLOCK_SIDE = BLOCK_SIZE - BLOCK_PADDING
@@ -52,10 +53,9 @@ signal(SIGPIPE, SIG_DFL)
 """Avoid 'Broken pipe' message when canceling piped command."""
 
 
-def qr2scad(stream):
+def qr2scad(infile,outfile):
     """Convert black pixels to OpenSCAD cubes."""
-
-    img = Image.open(stream)
+    img = Image.open(infile)
 
     # Convert to black and white 8-bit
     if img.mode != 'L':
@@ -108,12 +108,24 @@ def qr2scad(stream):
                 result += ' _qr_code_dot();\n'
     result += '}\n'
     result += 'qr_code_size = %d;' % (qr_side)
-
+    f = open(outfile,"w+")
+    f.write(result)
+    f.close()
     return result
 
 
 def main(argv=None):
-    print qr2scad(sys.stdin)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("infile", help="Input png file.")
+    parser.add_argument("outfile", help="output file")
+    parser.add_argument("-v", "--verbosity", action="count",
+                        help="write to screen")
+    args = parser.parse_args()
+    print "Using {0} to generate {1}.".format(args.infile,args.outfile)
+    result = qr2scad(args.infile,args.outfile)
+    if(args.verbosity):
+        print result
 
+    
 if __name__ == '__main__':
     sys.exit(main())
