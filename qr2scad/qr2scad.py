@@ -120,15 +120,17 @@ def qr2scad(infile,outfile,render=False):
 def main(argv=None):
     parser = argparse.ArgumentParser()
     parser.add_argument("infile", help="Input png file.")
-    parser.add_argument("outfile", help="output file")
+    parser.add_argument("outfile", help="Output scad file")
     parser.add_argument("-v", "--verbosity", action="count",
                         help="write to screen")
     parser.add_argument("-r", "--render", action="count",
                         help="Have the scad render the qr code.")
     parser.add_argument("-g", "--generate",  
                         help="generate")
-
     args = parser.parse_args()
+#    if( args.help ):
+#        print 'python qr2scad -r <qrcodefile.png> <outfile.scad> -g <string you want to generate e.g. "Hi Mom".>'
+
     if(args.generate):
         qr = qrc.QRCode(
             version=1,
