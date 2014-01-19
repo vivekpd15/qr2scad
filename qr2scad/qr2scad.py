@@ -140,7 +140,7 @@ def main(argv=None):
         qr.make(fit=True)
         img = qr.make_image()
         img.save(args.infile)
-        print args.generate
+        print "Generating QR Code for <{0}>. Saving it to {1}.".format( args.generate,args.infile) 
         
     print "Using {0} to generate {1}.".format(args.infile,args.outfile)
     result = qr2scad(args.infile,args.outfile,args.render)
