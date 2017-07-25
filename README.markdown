@@ -6,11 +6,11 @@ Why use this? If someone sees the QR code on your thing in real life, they can f
 Installation / upgrade
 ----------------------
 
-    pip install --upgrade https://github.com/l0b0/qr2scad/tarball/master
+    pip install --upgrade https://github.com/vivekpd15/qr2scad/tarball/master 
 
 To install a specific version `X.Y.Z` (only 0.6.2 onward):
 
-    pip install https://github.com/l0b0/qr2scad/tarball/vX.Y.Z
+    pip install https://github.com/vivekpd15/qr2scad/tarball/vX.Y.Z
 
 How to use
 ----------
