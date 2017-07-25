@@ -44,7 +44,7 @@ BLOCK_PADDING = 0.01
 Object isn't a valid 2-manifold! on STL export (see
 <http://en.wikibooks.org/wiki/OpenSCAD_User_Manual/STL_Import_and_Export>)."""
 
-BLOCK_SIDE = BLOCK_SIZE - BLOCK_PADDING
+BLOCK_SIDE = BLOCK_SIZE + BLOCK_PADDING
 """This is the actual side length of a block."""
 
 PDP_SIDE = 7
